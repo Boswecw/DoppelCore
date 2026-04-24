@@ -1,7 +1,12 @@
+pub mod comparison;
 pub mod contracts;
 pub mod errors;
 pub mod records;
 
+pub use comparison::{
+    DoppelAnchorDelta, DoppelDeltaKind, DoppelDriftDelta, DoppelHistoryEntry,
+    DoppelManifestComparison,
+};
 pub use contracts::{
     DoppelAnchorKind, DoppelClaimType, DoppelDeterminismClass, DoppelDriftKind,
     DoppelIntakeSourceKind, DoppelIntakeStatusKind, DoppelPostureKind, DoppelProfileId,
