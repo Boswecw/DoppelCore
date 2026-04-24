@@ -5,8 +5,20 @@ pub enum DoppelCoreError {
     #[error("unknown doppel profile id: {0}")]
     UnknownProfileId(String),
 
+    #[error("unknown doppel subject kind: {0}")]
+    UnknownSubjectKind(String),
+
+    #[error("unknown doppel anchor kind: {0}")]
+    UnknownAnchorKind(String),
+
     #[error("unknown doppel claim type: {0}")]
     UnknownClaimType(String),
+
+    #[error("unknown doppel truth class: {0}")]
+    UnknownTruthClass(String),
+
+    #[error("unknown doppel determinism class: {0}")]
+    UnknownDeterminismClass(String),
 
     #[error("unknown doppel posture kind: {0}")]
     UnknownPostureKind(String),

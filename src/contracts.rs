@@ -4,7 +4,7 @@ use crate::errors::{DoppelCoreError, Result};
 
 macro_rules! string_enum {
     ($name:ident, $err_variant:ident, { $($variant:ident => $value:literal),+ $(,)? }) => {
-        #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Hash)]
+        #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
         #[serde(rename_all = "snake_case")]
         pub enum $name {
             $($variant),+
@@ -28,26 +28,79 @@ macro_rules! string_enum {
 }
 
 string_enum!(DoppelProfileId, UnknownProfileId, {
-    SystemReality => "system_reality",
-    CorrectionReady => "correction_ready"
+    DocSystemV1 => "doc_system_v1",
+    RouteServiceSliceV1 => "route_service_slice_v1",
+    RepoMirrorFoundationV1 => "repo_mirror_foundation_v1"
+});
+
+impl Default for DoppelProfileId {
+    fn default() -> Self {
+        Self::RouteServiceSliceV1
+    }
+}
+
+string_enum!(DoppelSubjectKind, UnknownSubjectKind, {
+    Repository => "repository",
+    Module => "module",
+    Route => "route",
+    Service => "service",
+    Workflow => "workflow",
+    PersistencePath => "persistence_path",
+    EventPath => "event_path",
+    DocumentationArtifact => "documentation_artifact"
+});
+
+string_enum!(DoppelAnchorKind, UnknownAnchorKind, {
+    FilePath => "file_path",
+    Function => "function",
+    EventVariant => "event_variant",
+    SqlTable => "sql_table",
+    ArtifactPath => "artifact_path"
 });
 
 string_enum!(DoppelClaimType, UnknownClaimType, {
-    CanonicalFact => "canonical_fact",
-    ComplianceFact => "compliance_fact",
-    BehavioralFact => "behavioral_fact"
+    DocStructure => "doc_structure",
+    DocDiscovery => "doc_discovery",
+    CanonicalOutputContract => "canonical_output_contract",
+    SnapshotValidation => "snapshot_validation",
+    RouteDelegate => "route_delegate",
+    WorkflowGuard => "workflow_guard",
+    PersistenceWrite => "persistence_write",
+    EventEmission => "event_emission",
+    ArtifactFreshness => "artifact_freshness"
+});
+
+string_enum!(DoppelTruthClass, UnknownTruthClass, {
+    Deterministic => "deterministic",
+    Inferred => "inferred",
+    Mixed => "mixed"
+});
+
+string_enum!(DoppelDeterminismClass, UnknownDeterminismClass, {
+    Deterministic => "deterministic",
+    Heuristic => "heuristic",
+    OperatorAsserted => "operator_asserted",
+    Mixed => "mixed"
 });
 
 string_enum!(DoppelPostureKind, UnknownPostureKind, {
-    Clear => "clear",
-    Review => "review",
-    Blocked => "blocked"
+    Verified => "verified",
+    Deterministic => "deterministic",
+    Inferred => "inferred",
+    Partial => "partial",
+    Blocked => "blocked",
+    Stale => "stale",
+    Unknown => "unknown",
+    Conflicted => "conflicted",
+    Unassessable => "unassessable"
 });
 
 string_enum!(DoppelDriftKind, UnknownDriftKind, {
-    AnchorDrift => "anchor_drift",
-    EvidenceGap => "evidence_gap",
-    ClaimConflict => "claim_conflict"
+    CanonicalArtifactFreshness => "canonical_artifact_freshness",
+    CanonicalArtifactMissing => "canonical_artifact_missing",
+    CanonicalArtifactBlocked => "canonical_artifact_blocked",
+    AnchorChanged => "anchor_changed",
+    AnchorAdded => "anchor_added"
 });
 
 string_enum!(DoppelIntakeSourceKind, UnknownIntakeSourceKind, {
@@ -67,8 +120,8 @@ mod tests {
     #[test]
     fn profile_id_round_trip() {
         assert_eq!(
-            DoppelProfileId::from_str(DoppelProfileId::SystemReality.as_str()).unwrap(),
-            DoppelProfileId::SystemReality
+            DoppelProfileId::from_str(DoppelProfileId::DocSystemV1.as_str()).unwrap(),
+            DoppelProfileId::DocSystemV1
         );
     }
 
@@ -77,6 +130,14 @@ mod tests {
         assert_eq!(
             DoppelIntakeStatusKind::from_str(DoppelIntakeStatusKind::Accepted.as_str()).unwrap(),
             DoppelIntakeStatusKind::Accepted
+        );
+    }
+
+    #[test]
+    fn posture_kind_round_trip() {
+        assert_eq!(
+            DoppelPostureKind::from_str(DoppelPostureKind::Verified.as_str()).unwrap(),
+            DoppelPostureKind::Verified
         );
     }
 }
