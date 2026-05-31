@@ -7,6 +7,7 @@ pub mod errors;
 pub mod extraction;
 pub mod intake;
 pub mod manifest;
+pub mod projection;
 pub mod records;
 
 pub use compare::{build_history_entry, compare_manifests};
@@ -35,6 +36,10 @@ pub use extraction::{
 };
 pub use intake::{normalize_extraction_packet, DoppelNormalizedRecords};
 pub use manifest::{assemble_manifest_bundle, DoppelManifestInputs};
+pub use projection::{
+    project_review, render_review_markdown, DoppelClaimProjection, DoppelReviewProjection,
+    DoppelSubjectProjection,
+};
 pub use records::{
     DoppelAnchorRecord, DoppelClaimRecord, DoppelDriftRecord, DoppelEvidenceRecord,
     DoppelIntakeReceiptRecord, DoppelManifestBundle, DoppelManifestRecord, DoppelPostureRecord,
