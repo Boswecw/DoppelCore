@@ -13,7 +13,9 @@ use doppelcore::extraction::{
     DoppelExtractedAnchor, DoppelExtractedSubject, DoppelExtractionPacket,
     DoppelExtractionPacketKind, DoppelExtractionProvenance,
 };
-use doppelcore::{derive_truth, normalize_extraction_packet};
+use doppelcore::{
+    assemble_manifest_bundle, derive_truth, normalize_extraction_packet, DoppelManifestInputs,
+};
 
 fn ts() -> DateTime<Utc> {
     DateTime::from_timestamp(1_700_000_000, 0).unwrap()
@@ -86,4 +88,30 @@ fn changed_handler_across_runs_surfaces_stale_drift() {
     let drift = &truth.drift[0];
     assert_eq!(drift.drift_kind, doppelcore::DoppelDriftKind::AnchorChanged);
     assert_eq!(drift.posture, DoppelPostureKind::Stale);
+}
+
+#[test]
+fn full_pipeline_emits_a_manifest_bundle() {
+    let packet = route_packet("run-1", "hash-1");
+    let normalized = normalize_extraction_packet(&packet).unwrap();
+    let truth = derive_truth(&normalized, &[], ts());
+
+    let inputs = DoppelManifestInputs::from_provenance(
+        &packet.provenance,
+        "doppelcore",
+        Some("compliance-1".into()),
+        "0.1.0",
+    );
+    let bundle = assemble_manifest_bundle(&inputs, &normalized, &truth, ts());
+
+    // Canvas 09 Rule 2: the machine bundle has a manifest with accurate counts.
+    assert_eq!(bundle.manifest.manifest_id, "manifest:run-1");
+    assert_eq!(bundle.manifest.record_counts.subjects, 1);
+    assert_eq!(bundle.manifest.record_counts.claims, 1);
+    assert_eq!(
+        bundle.manifest.posture_summary.aggregate_posture,
+        DoppelPostureKind::Verified
+    );
+    assert!(!bundle.manifest.render_digest.is_empty());
+    assert!(bundle.rendered_markdown.contains("health_handler"));
 }

@@ -5,6 +5,7 @@ pub mod derivation;
 pub mod errors;
 pub mod extraction;
 pub mod intake;
+pub mod manifest;
 pub mod records;
 
 pub use comparison::{
@@ -31,6 +32,7 @@ pub use extraction::{
     DoppelExtractionPacketKind, DoppelExtractionProvenance,
 };
 pub use intake::{normalize_extraction_packet, DoppelNormalizedRecords};
+pub use manifest::{assemble_manifest_bundle, DoppelManifestInputs};
 pub use records::{
     DoppelAnchorRecord, DoppelClaimRecord, DoppelDriftRecord, DoppelEvidenceRecord,
     DoppelIntakeReceiptRecord, DoppelManifestBundle, DoppelManifestRecord, DoppelPostureRecord,
