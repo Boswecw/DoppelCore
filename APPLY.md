@@ -1,18 +1,15 @@
 # APPLY
 
-Run these commands exactly:
+DoppelCore is a standalone, self-contained Rust library. There is no longer a
+zip-extract step or a copy into `~/Forge/ecosystem/DoppelCore` — work with the
+repository directly:
 
 ```bash
-cd ~/Downloads || exit 1
-unzip -o doppelcore_phase_8e_repo_init_slice_2026-04-24.zip
+git clone <repo-url> DoppelCore
+cd DoppelCore
 
-mkdir -p ~/Forge/ecosystem/DoppelCore
-cp -R ~/Downloads/doppelcore_phase_8e_repo_init_slice_2026-04-24/. ~/Forge/ecosystem/DoppelCore/
-
-cd ~/Forge/ecosystem/DoppelCore || exit 1
-[ -d .git ] || git init -b main
-
-cargo test
 cargo check
-git status --short
+cargo test
 ```
+
+See `VERIFY.md` for the health criteria.
