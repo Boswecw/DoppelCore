@@ -1,3 +1,4 @@
+pub mod compare;
 pub mod comparison;
 pub mod contracts;
 pub mod correction;
@@ -8,6 +9,7 @@ pub mod intake;
 pub mod manifest;
 pub mod records;
 
+pub use compare::{build_history_entry, compare_manifests};
 pub use comparison::{
     DoppelAnchorDelta, DoppelDeltaKind, DoppelDriftDelta, DoppelHistoryEntry,
     DoppelManifestComparison,
