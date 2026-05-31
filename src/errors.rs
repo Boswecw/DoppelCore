@@ -31,6 +31,9 @@ pub enum DoppelCoreError {
 
     #[error("unknown doppel intake status kind: {0}")]
     UnknownIntakeStatusKind(String),
+
+    #[error("extracted anchor `{anchor}` references unknown subject `{subject}`")]
+    DanglingExtractionAnchor { anchor: String, subject: String },
 }
 
 pub type Result<T> = std::result::Result<T, DoppelCoreError>;
