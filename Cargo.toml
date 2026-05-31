@@ -3,7 +3,7 @@ name = "doppelcore"
 version = "0.1.0"
 edition = "2021"
 publish = false
-license = "Proprietary"
+license-file = "LICENSE"
 
 [dependencies]
 chrono = { version = "0.4", features = ["clock", "serde"] }
